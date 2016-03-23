@@ -1,0 +1,15 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block content %}
+    <h1>Inscription sur Spotizer</h1>
+
+    <form action="" method="post">
+        {{ form_widget(form) }}
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">M'inscrire</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

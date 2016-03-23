@@ -1,0 +1,44 @@
+homepage:
+    path: /
+    defaults:
+        _controller: AppBundle:Default:index
+        name: 'tout le monde'
+
+app_track_index:
+    path: /tracks/
+    defaults:
+            _controller: AppBundle:Track:index
+
+app_track_new:
+    path: /tracks/new
+    defaults:
+        _controller: AppBundle:Track:edit
+
+app_track_edit:
+    path: /tracks/{id}
+    defaults:
+        _controller: AppBundle:Track:edit
+    requirements:
+        id: \d+
+
+app_artist_index:
+    path: /artists/
+    defaults:
+        _controller: AppBundle:Artist:index
+
+app_artist_new:
+    path: /artists/new
+    defaults:
+        _controller: AppBundle:Artist:edit
+
+app_artist_edit:
+    path: /artists/{id}
+    defaults:
+        _controller: AppBundle:Artist:edit
+    requirements:
+        id: \d+
+
+app_security_register:
+    path: /register
+    defaults:
+        _controller: AppBundle:Security:register

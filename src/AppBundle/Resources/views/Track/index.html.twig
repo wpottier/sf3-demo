@@ -1,0 +1,46 @@
+{% extends 'AppBundle::base.html.twig' %}
+{# @var tracks \AppBundle\Entity\Track[] #}
+
+{% block title %}{{ block('heading') }} - {{ parent() }}{% endblock %}
+
+{% block content %}
+
+    <h1>{% block heading %}Liste des titres{% endblock %}</h1>
+
+    <div class="row">
+        <div class="clearfix">
+            <div class="pull-right">
+                <a href="{{ path('app_artist_new') }}" class="btn btn-default"><i class="glyphicon glyphicon-plus-sign"></i>&nbsp;Ajouter</a>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <table class="table table-bordered table-stripped">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Artiste</th>
+                    <th>Date de sortie</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for track in tracks %}
+                <tr>
+                    <td>{{ track.name }}</td>
+                    <td>{{ track.artist.name }}</td>
+                    <td>{{ track.releasedAt|date('d/m/Y') }}</td>
+                    <td><a href="{{ path('app_track_edit', {'id': track.id}) }}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Editer</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if tracks.haveToPaginate %}
+            <div class="pagerfanta">
+                {{ pagerfanta(tracks, 'twitter_bootstrap3') }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

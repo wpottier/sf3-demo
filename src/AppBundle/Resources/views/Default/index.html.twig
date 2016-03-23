@@ -1,0 +1,14 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}Accueil - {{ parent() }}{% endblock %}
+
+{% block content %}
+    <h1>Vos playlists</h1>
+    <table class="table table-bordered table-stripped">
+        {% for playlist in playlists %}
+            <tr>
+                <td>{{ playlist.name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
