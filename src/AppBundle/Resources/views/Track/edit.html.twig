@@ -2,7 +2,17 @@
 
 {% block content %}
     <form action="" method="post">
-        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.name) }}
+
+        <div class="form-group">
+            {{ form_errors(form.description) }}
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+        </div>
+
+        {{ form_rest(form) }}
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

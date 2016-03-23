@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Track
@@ -25,6 +26,7 @@ class Track
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -39,6 +41,7 @@ class Track
      * @var \DateTime
      *
      * @ORM\Column(name="released_at", type="date", nullable=true)
+     * @Assert\Date()
      */
     private $releasedAt;
 
@@ -53,7 +56,9 @@ class Track
      * @var Artist
      *
      * @ORM\ManyToOne(targetEntity="Artist", inversedBy="tracks")
-     * @ORM\JoinColumn(name="artist_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="artist_id", referencedColumnName="id", onDelete="CASCADE")
+     *
+     * @Assert\NotNull()
      */
     private $artist;
 

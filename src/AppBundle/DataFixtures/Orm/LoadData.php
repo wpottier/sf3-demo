@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\DataFixtures\Orm;
+namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Artist;
 use AppBundle\Entity\Track;

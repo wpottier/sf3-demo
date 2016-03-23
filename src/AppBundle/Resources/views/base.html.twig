@@ -8,6 +8,14 @@
 <body>
     {{ include('AppBundle::_menu.html.twig', {'page_title': block('title')}) }}
 
+    {% for type, flashes in app.session.flashBag.all() %}
+        {% for flash in flashes %}
+            <div class="alert alert-{{ type }}">
+                {{ flash }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     <div class="container">
         {% block content %}{% endblock %}
     </div>

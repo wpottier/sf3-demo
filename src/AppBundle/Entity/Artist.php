@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Artist
@@ -26,6 +27,9 @@ class Artist
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Il faut donner un nom à l'artiste")
+     * @Assert\Length(min="2", minMessage="Il faut au moins 2 caractères")
      */
     private $name;
 

@@ -37,6 +37,15 @@ app_artist_edit:
         _controller: AppBundle:Artist:edit
     requirements:
         id: \d+
+    methods: [GET, POST]
+
+app_artist_delete:
+    path: /artists/{id}
+    defaults:
+        _controller: AppBundle:Artist:delete
+    requirements:
+        id: \d+
+    methods: [DELETE]
 
 app_security_register:
     path: /register

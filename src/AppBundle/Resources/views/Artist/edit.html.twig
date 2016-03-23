@@ -1,7 +1,17 @@
 {% extends 'AppBundle::base.html.twig' %}
 
 {% block content %}
-    <form action="" method="post" class="form-horizontal">
+    {% if deleteForm is not null %}
+    <div class="clearfix">
+        <div class="pull-right">
+            {{ form_start(deleteForm) }}
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            {{ form_end(deleteForm) }}
+        </div>
+    </div>
+    <hr />
+    {% endif %}
+    <form action="" method="post" class="form-horizontal" novalidate>
         {{ form_widget(form) }}
 
         <div class="form-group">
