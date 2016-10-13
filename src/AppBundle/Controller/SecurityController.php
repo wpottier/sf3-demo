@@ -39,4 +39,14 @@ class SecurityController extends Controller
             'form' => $form->createView()
         ]);
     }
+
+    public function loginAction()
+    {
+        $authenticationUtils = $this->get('security.authentication_utils');
+
+        return $this->render('AppBundle:Security:login.html.twig', [
+            'last_username' => $authenticationUtils->getLastUsername(),
+            'error' => $authenticationUtils->getLastAuthenticationError(),
+        ]);
+    }
 }

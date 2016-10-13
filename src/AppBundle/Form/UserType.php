@@ -23,7 +23,13 @@ class UserType extends AbstractType
             ->add('username')
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'required' => true
+                'required' => true,
+                'first_options' => [
+                    'label' => 'Password',
+                ],
+                'second_options' => [
+                    'label' => 'Confirm password',
+                ],
             ])
         ;
     }

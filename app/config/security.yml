@@ -9,7 +9,6 @@ security:
         AppBundle\Entity\User: bcrypt
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -18,22 +17,14 @@ security:
             pattern: ^/
             anonymous: ~
             provider: users
-            # activate different ways to authenticate
+            form_login:
+                login_path: app_security_login
+                check_path: app_security_login
 
-            http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            logout:
+                path: app_security_logout
+                target: homepage
 
     access_control:
         - { path: ^/(tracks|artists)/(new|\d+), roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-
-# [
-#    'access_control' => [
-#      ['path' => '...', 'roles' => '...'],
-#      ['path' => '...', 'roles' => '...']
-#    ]
-# ]
-#

@@ -51,3 +51,11 @@ app_security_register:
     path: /register
     defaults:
         _controller: AppBundle:Security:register
+
+app_security_logout:
+    path: /logout
+
+app_security_login:
+    path: /login
+    defaults:
+        _controller: AppBundle:Security:login
