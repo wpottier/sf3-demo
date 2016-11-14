@@ -28,10 +28,13 @@
             <tbody>
                 {% for track in tracks %}
                 <tr>
-                    <td>{{ track.name }}</td>
+                    <td><a href="{{ path('app_track_view', {id: track.id}) }}">{{ track.name }}</a></td>
                     <td>{{ track.artist.name }}</td>
                     <td>{{ track.releasedAt|date('d/m/Y') }}</td>
-                    <td><a href="{{ path('app_track_edit', {'id': track.id}) }}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Editer</a></td>
+                    <td>
+                        <a href="{{ path('app_track_edit', {id: track.id}) }}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Editer</a>
+                        <a href="{{ path('app_track_addtoplaylist', {id: track.id}) }}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-plus"></i>&nbsp;Ajouter à une playlist</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

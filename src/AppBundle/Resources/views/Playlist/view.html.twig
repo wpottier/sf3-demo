@@ -1,0 +1,25 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block content %}
+
+    <h1>Playlist : {{ playlist.name }}</h1>
+
+    <dl>
+        <dt>Publique</dt>
+        <dd><span class="label label-{{ playlist.public ? 'success' : 'danger' }}">{{ playlist.public ? 'oui' : 'non' }}</span></dd>
+    </dl>
+
+    <table class="table table-bordered">
+        {% for track in playlist.tracks %}
+            <tr>
+                <td>{{ track.name }}</td>
+                <td>{{ track.artist.name }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2"><i>Il n'y a pas encore de piste dans cette playlist</i></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Artist;
+use AppBundle\Form\ArtistType;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 class ArtistController extends Controller
 {
     /**
+     * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -29,7 +32,7 @@ class ArtistController extends Controller
 
         if (!is_null($id)) {
             /** @var Artist $artist */
-            $artist = $this->get('app.repository.artist')->find($id);
+            $artist = $this->getDoctrine()->getRepository('AppBundle:Artist')->find($id);
 
             if (!$artist) {
                 throw $this->createNotFoundException();
@@ -42,7 +45,7 @@ class ArtistController extends Controller
             $artist = new Artist();
         }
 
-        $form = $this->createForm(\AppBundle\Form\ArtistType::class, $artist);
+        $form = $this->createForm(ArtistType::class, $artist);
 
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -53,7 +56,7 @@ class ArtistController extends Controller
 
             $em->flush();
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('app_artist_index');
         }
 
         return $this->render('AppBundle:Artist:edit.html.twig', [

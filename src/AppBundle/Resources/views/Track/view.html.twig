@@ -1,0 +1,32 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block content %}
+
+    <h1>{{ track.name }}</h1>
+
+    <dl>
+        <dt>Artiste</dt>
+        <dd>{{ track.artist.name }}</dd>
+
+        <dt>Date de sortie</dt>
+        <dd>{{ track.releasedAt|date('d/m/Y') }}</dd>
+
+        <dt>Genre</dt>
+        <dd>{{ track.genre }}</dd>
+    </dl>
+
+    <h2>Catalogue Spotify</h2>
+
+    <table class="table table-bordered table-stripped">
+        {% for track in spotifyData.items %}
+        <tr>
+            <td>{{ track.name }}</td>
+            <td><iframe src="https://embed.spotify.com/?uri={{ track.uri }}" width="300" height="80" frameborder="0" allowtransparency="true"></iframe></td>
+            <td><img src="{{ track.album.images[2].url }}" height="64" width="64" /></td>
+            <td><a href="{{ track.external_urls.spotify }}" class="btn btn-xs btn-default" target="_blank">Ouvrir dans spotify</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+

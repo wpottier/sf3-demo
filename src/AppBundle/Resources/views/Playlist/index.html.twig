@@ -1,0 +1,25 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}Accueil - {{ parent() }}{% endblock %}
+
+{% block content %}
+    {% if is_granted('ROLE_USER') %}
+        <h1>Mes Playlists</h1>
+
+        <table class="table table-bordered table-stripped">
+            {% for playlist in ownPlaylists %}
+                <tr>
+                    <td><a href="{{ path('app_playlist_view', {id: playlist.id}) }}">{{ playlist.name }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <h1>Les playlists publiques</h1>
+    <table class="table table-bordered table-stripped">
+        {% for playlist in publicPlaylists %}
+            <tr>
+                <td><a href="{{ path('app_playlist_view', {id: playlist.id}) }}">{{ playlist.name }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

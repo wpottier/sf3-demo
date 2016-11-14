@@ -5,8 +5,6 @@ parameters:
 
 services:
 
-
-
     app.mailer.notification:
         class: AppBundle\Mailer\NotificationMailer
         arguments:
@@ -15,19 +13,10 @@ services:
             - '@templating'
             - '@mailer'
 
+    guzzle:
+        class: GuzzleHttp\Client
 
-    # Repositories
-    app.repository.track:
-        class: AppBundle\Repository\TrackRepository
-        factory: ['@doctrine', 'getRepository']
-        arguments: ['AppBundle:Track']
-
-    app.repository.artist:
-        class: AppBundle\Repository\ArtistRepository
-        factory: ['@doctrine', 'getRepository']
-        arguments: ['AppBundle:Artist']
-
-    app.repository.playlist:
-        class: AppBundle\Repository\PlaylistRepository
-        factory: ['@doctrine', 'getRepository']
-        arguments: ['AppBundle:Playlist']
+    app.spotify.api:
+        class: AppBundle\Spotify\ApiClient
+        arguments:
+            - '@guzzle'

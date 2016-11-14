@@ -31,6 +31,21 @@ class Playlist
     private $name;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="public", type="boolean")
+     */
+    private $public;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $owner;
+
+    /**
      * @var Collection|Track[]
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Track")
@@ -73,6 +88,46 @@ class Playlist
     }
 
     /**
+     * @return boolean
+     */
+    public function isPublic()
+    {
+        return $this->public;
+    }
+
+    /**
+     * @param boolean $public
+     *
+     * @return $this
+     */
+    public function setPublic($public)
+    {
+        $this->public = $public;
+
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User $owner
+     *
+     * @return $this
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
      * @return Track[]|Collection
      */
     public function getTracks()
@@ -89,8 +144,6 @@ class Playlist
     {
         $this->tracks->add($track);
 
-        if ($track->get)
-
         return $this;
     }
 
@@ -99,9 +152,15 @@ class Playlist
         $this->tracks->removeElement($track);
     }
 
-    public function __construct()
+    public function __construct(User $owner)
     {
+        $this->owner = $owner;
         $this->tracks = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }
 

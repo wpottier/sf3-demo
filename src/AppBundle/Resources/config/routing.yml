@@ -1,13 +1,38 @@
 homepage:
     path: /
     defaults:
-        _controller: AppBundle:Default:index
-        name: 'tout le monde'
+        _controller: AppBundle:Playlist:index
+
+app_playlist_view:
+    path: /{id}/edit
+    defaults:
+        _controller: AppBundle:Playlist:view
+    requirements:
+        id: \d+
+
+app_playlist_new:
+    path: /new
+    defaults:
+        _controller: AppBundle:Playlist:edit
+
+app_playlist_edit:
+    path: /{id}/edit
+    defaults:
+        _controller: AppBundle:Playlist:edit
+    requirements:
+        id: \d+
 
 app_track_index:
     path: /tracks/
     defaults:
             _controller: AppBundle:Track:index
+
+app_track_view:
+    path: /tracks/{id}
+    defaults:
+        _controller: AppBundle:Track:view
+    requirements:
+        id: \d+
 
 app_track_new:
     path: /tracks/new
@@ -18,6 +43,13 @@ app_track_edit:
     path: /tracks/{id}
     defaults:
         _controller: AppBundle:Track:edit
+    requirements:
+        id: \d+
+
+app_track_addtoplaylist:
+    path: /tracks/{id}/add
+    defaults:
+        _controller: AppBundle:Track:addToPlaylist
     requirements:
         id: \d+
 
