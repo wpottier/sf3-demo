@@ -26,7 +26,7 @@ class TrackController extends Controller
 
     public function viewAction($id)
     {
-        $track = $this->getDoctrine()->getRepository('AppBundle:Track')->find($id);
+        $track = $this->getDoctrine()->getRepository('AppBundle:Track')->findWithArtist($id);
 
         if (!$track) {
             throw $this->createNotFoundException();

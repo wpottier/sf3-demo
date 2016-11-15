@@ -25,4 +25,18 @@ class TrackRepository extends \Doctrine\ORM\EntityRepository
 
         return new DoctrineORMAdapter($qb);
     }
+
+    public function findWithArtist($trackId)
+    {
+        $qb = $this->createQueryBuilder('tracks');
+        $qb
+            ->leftJoin('tracks.artist', 'artists')
+            ->select('tracks', 'artists')
+            ->where($qb->expr()->eq('tracks.id', ':trackId'))
+            ->setParameter('trackId', $trackId)
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
 }

@@ -5,18 +5,71 @@ parameters:
 
 services:
 
-    app.mailer.notification:
-        class: AppBundle\Mailer\NotificationMailer
+    app.mailer.abstract:
+        abstract: true
         arguments:
             - 'Spotizer'
             - 'spotizer@clever-age.com'
             - '@templating'
             - '@mailer'
 
+    app.mailer.notification:
+        class: 'AppBundle\Mailer\NotificationMailer'
+        parent: app.mailer.abstract
+        #arguments:
+        #    - '@mailer'
+
     guzzle:
-        class: GuzzleHttp\Client
+        class: 'GuzzleHttp\Client'
+        public: false
+        #shared: false
+        scope: prototype
 
     app.spotify.api:
-        class: AppBundle\Spotify\ApiClient
+        class: 'AppBundle\Spotify\ApiClient'
         arguments:
             - '@guzzle'
+            - '@app.collector.spotify_api'
+        calls:
+            - ['setStopwatch', ['@?debug.stopwatch']]
+
+    app.repository.playlist:
+        class: 'AppBundle\Repository\PlaylistRepository'
+        factory: ['@doctrine', 'getRepository']
+        arguments:
+            - 'AppBundle:Playlist'
+
+    app.repository.artist:
+        class: 'AppBundle\Repository\ArtistRepository'
+        factory: ['@doctrine', 'getRepository']
+        arguments:
+            - 'AppBundle:Artist'
+
+    app.repository.track:
+        class: 'AppBundle\Repository\TrackRepository'
+        factory: ['@doctrine', 'getRepository']
+        arguments:
+            - 'AppBundle:Track'
+
+    app.repository.user:
+        class: 'AppBundle\Repository\UserRepository'
+        factory: ['@doctrine', 'getRepository']
+        arguments:
+            - 'AppBundle:User'
+
+    app.controller.playlist:
+        class: AppBundle\Controller\PlaylistController
+        calls:
+            - ['setContainer', ['@service_container']]
+
+    app.collector.spotify_api:
+        class: AppBundle\DataCollector\SpotifyApiCollector
+        tags:
+            - { name: data_collector, template: 'AppBundle:toolbar:spotify.html.twig', id: 'spotify_api' }
+
+#    date_test:
+#        class: \DateTime
+#        factory: ['\DateTime', 'createFromFormat']
+#        arguments:
+
+# <server>/app_dev.php
