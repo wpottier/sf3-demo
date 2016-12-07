@@ -5,12 +5,14 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Playlist
  *
  * @ORM\Table(name="playlists")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PlaylistRepository")
+ *
  */
 class Playlist
 {
@@ -27,6 +29,8 @@ class Playlist
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min="2")
      */
     private $name;
 

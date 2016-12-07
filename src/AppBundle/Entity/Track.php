@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Track
@@ -42,6 +43,8 @@ class Track
      *
      * @ORM\Column(name="released_at", type="date", nullable=true)
      * @Assert\Date()
+     *
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      */
     private $releasedAt;
 
@@ -59,6 +62,8 @@ class Track
      * @ORM\JoinColumn(name="artist_id", referencedColumnName="id", onDelete="CASCADE")
      *
      * @Assert\NotNull()
+     *
+     * @Serializer\Exclude()
      */
     private $artist;
 

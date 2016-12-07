@@ -16,7 +16,27 @@
 {% endblock %}
 
 {% block menu %}
+    <span class="label">
+        <span class="icon"></span>
+        <strong>API Spotify</strong>
+        <span class="count">
+            <span>{{ collector.calls|length }}</span>
+        </span>
+    </span>
 {% endblock %}
 
 {% block panel %}
+    <h2>Queries</h2>
+
+    <ul class="alt">
+        {% for call in collector.calls %}
+            <li class="{{ cycle(['odd', 'even'], loop.index) }}">
+                <div>
+                    <code>{{ loop.index }} : {{ call.uri }}</code>
+                </div>
+            </li>
+        {% else %}
+            <li>Pas d'appel sur l'API</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

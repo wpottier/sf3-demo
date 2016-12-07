@@ -67,6 +67,22 @@ services:
         tags:
             - { name: data_collector, template: 'AppBundle:toolbar:spotify.html.twig', id: 'spotify_api' }
 
+    app.twig.extension.string:
+        class: AppBundle\Twig\StringExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    app.event_listener.locale:
+        class: AppBundle\EventListener\LocaleListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onRequest }
+
+    app.voter.playlist:
+        class: AppBundle\Security\Voter\PlaylistVoter
+        tags:
+            - { name: security.voter }
+
 #    date_test:
 #        class: \DateTime
 #        factory: ['\DateTime', 'createFromFormat']

@@ -12,7 +12,9 @@ class SecurityController extends Controller
     public function registerAction(Request $request)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, [
+            'validation_groups' => ['Default', 'Registration'],
+        ]);
 
         if ($form->handleRequest($request)->isValid()) {
             $encoder = $this->get('security.encoder_factory')

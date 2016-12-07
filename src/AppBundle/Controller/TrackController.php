@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Playlist;
 use AppBundle\Entity\Track;
+use AppBundle\Event\AddToPlaylistEvent;
 use AppBundle\Form\AddToPlaylistType;
 use AppBundle\Form\TrackType;
 use Pagerfanta\Pagerfanta;
@@ -97,6 +98,11 @@ class TrackController extends Controller
             $playlist->addTrack($track);
 
             $this->getDoctrine()->getManager()->flush();
+
+            $this->get('event_dispatcher')->dispatch(
+                'spotizer.playlist.add_track',
+                new AddToPlaylistEvent($playlist, $track)
+            );
 
             return $this->redirectToRoute('app_playlist_view', [
                 'id' => $playlist->getId(),

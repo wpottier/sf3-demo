@@ -7,6 +7,7 @@ use AppBundle\Entity\User;
 use AppBundle\Form\PlaylistType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class PlaylistController extends Controller
 {
@@ -31,6 +32,10 @@ class PlaylistController extends Controller
             throw $this->createNotFoundException();
         }
 
+        if (!$this->isGranted('ROLE_VIEW', $playlist)) {
+            throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException();
+        }
+
         return $this->render('AppBundle:Playlist:view.html.twig', [
             'playlist' => $playlist,
         ]);
@@ -45,6 +50,10 @@ class PlaylistController extends Controller
 
             if (!$playlist) {
                 throw $this->createNotFoundException();
+            }
+
+            if (!$this->isGranted('ROLE_EDIT', $playlist)) {
+                throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException();
             }
         }
 

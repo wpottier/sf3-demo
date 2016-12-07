@@ -4,6 +4,10 @@
 
     <h1>Playlist : {{ playlist.name }}</h1>
 
+    {% if is_granted('ROLE_EDIT', playlist) %}
+        <a href="{{ path('app_playlist_edit', {id: playlist.id}) }}" class="btn btn-default">Editer</a>
+    {% endif %}
+
     <dl>
         <dt>Publique</dt>
         <dd><span class="label label-{{ playlist.public ? 'success' : 'danger' }}">{{ playlist.public ? 'oui' : 'non' }}</span></dd>

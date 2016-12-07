@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Artist
@@ -30,6 +31,8 @@ class Artist
      *
      * @Assert\NotBlank(message="Il faut donner un nom à l'artiste")
      * @Assert\Length(min="2", minMessage="Il faut au moins 2 caractères")
+     *
+     * @Serializer\SerializedName("nom")
      */
     private $name;
 
@@ -37,6 +40,7 @@ class Artist
      * @var Collection|Track[]
      *
      * @ORM\OneToMany(targetEntity="Track", mappedBy="artist")
+     * @Serializer\Groups({"Full"})
      */
     private $tracks;
 
@@ -72,6 +76,14 @@ class Artist
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Track[]|Collection
+     */
+    public function getTracks()
+    {
+        return $this->tracks;
     }
 
     public function __toString()

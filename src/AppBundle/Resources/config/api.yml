@@ -1,0 +1,31 @@
+app_api_artist_index:
+    path: /artists/
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Api/Artist:index
+
+app_api_artist_view:
+    path: /artists/{id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Api/Artist:view
+    requirements:
+        id: \d+
+
+app_api_artist_new:
+    path: /artists/
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Api/Artist:new
+
+app_api_track_index:
+    path: /tracks/
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Api/Track:index
+
+app_api_track_edit:
+    path: /tracks/{id}
+    methods: [PATCH]
+    defaults:
+        _controller: AppBundle:Api/Track:edit
