@@ -4,7 +4,7 @@ homepage:
         _controller: AppBundle:Playlist:index
 
 app_playlist_view:
-    path: /{id}/edit
+    path: /{id}
     defaults:
         _controller: AppBundle:Playlist:view
     requirements:
