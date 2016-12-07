@@ -87,7 +87,7 @@ class TrackController extends Controller
         }
 
         $form = $this->createForm(AddToPlaylistType::class, null, [
-            'action' => $request->getPathInfo()
+            'action' => $request->getRequestUri()
         ]);
 
         if ($form->handleRequest($request)->isValid()) {
