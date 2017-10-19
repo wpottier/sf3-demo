@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\AppBundle;
 use AppBundle\Entity\Playlist;
 use AppBundle\Entity\User;
 use AppBundle\Form\PlaylistType;
@@ -14,11 +15,11 @@ class PlaylistController extends Controller
     {
         $ownPlaylists = null;
         if ($this->getUser() instanceof User) {
-            $ownPlaylists = $this->get('app.repository.playlist')->findOwn($this->getUser());
+            $ownPlaylists = $this->getDoctrine()->getRepository('AppBundle:Playlist')->findOwn($this->getUser());
         }
 
         return $this->render('AppBundle:Playlist:index.html.twig', [
-            'publicPlaylists' => $this->get('app.repository.playlist')->findPublic(),
+            'publicPlaylists' => $this->getDoctrine()->getRepository('AppBundle:Playlist')->findPublic(),
             'ownPlaylists' => $ownPlaylists
         ]);
     }
@@ -53,8 +54,9 @@ class PlaylistController extends Controller
         }
 
         $form = $this->createForm(PlaylistType::class, $playlist);
+        $form->handleRequest($request);
 
-        if ($form->handleRequest($request)->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             if (is_null($id)) {

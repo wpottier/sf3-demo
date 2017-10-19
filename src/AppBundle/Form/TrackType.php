@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Track;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,7 +19,7 @@ class TrackType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('releasedAt', \Symfony\Component\Form\Extension\Core\Type\DateType::class)
+            ->add('releasedAt', DateType::class)
             ->add('genre')
             ->add('artist')
         ;
@@ -30,7 +31,7 @@ class TrackType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Track'
+            'data_class' => Track::class
         ));
     }
 }

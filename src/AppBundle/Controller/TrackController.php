@@ -6,21 +6,15 @@ use AppBundle\Entity\Playlist;
 use AppBundle\Entity\Track;
 use AppBundle\Form\AddToPlaylistType;
 use AppBundle\Form\TrackType;
-use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class TrackController extends Controller
 {
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $pager = new Pagerfanta(
-            $this->getDoctrine()->getRepository('AppBundle:Track')->findAllWithArtistPagerAware()
-        );
-        $pager->setCurrentPage($request->query->get('page', 1));
-
         return $this->render('AppBundle:Track:index.html.twig', [
-            'tracks' => $pager,
+            'tracks' => $this->getDoctrine()->getRepository('AppBundle:Track')->findAllWithArtist(),
         ]);
     }
 
@@ -32,7 +26,7 @@ class TrackController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $spotifyData = $this->get('app.spotify.api')->populateTrackInfo(
+        $spotifyData = $this->get('app.spotify.client')->populateTrackInfo(
             $track->getName(),
             $track->getArtist()->getName()
         );
@@ -60,8 +54,9 @@ class TrackController extends Controller
         }
 
         $form = $this->createForm(TrackType::class, $track);
+        $form->handleRequest($request);
 
-        if ($form->handleRequest($request)->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             if (is_null($id)) {
@@ -89,9 +84,10 @@ class TrackController extends Controller
         $form = $this->createForm(AddToPlaylistType::class, null, [
             'action' => $request->getRequestUri()
         ]);
+        $form->handleRequest($request);
 
-        if ($form->handleRequest($request)->isValid()) {
 
+        if ($form->isSubmitted() && $form->isValid()) {
             /** @var Playlist $playlist */
             $playlist = $form->getData()['playlist'];
             $playlist->addTrack($track);

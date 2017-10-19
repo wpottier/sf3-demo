@@ -13,8 +13,9 @@ class SecurityController extends Controller
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
 
-        if ($form->handleRequest($request)->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $encoder = $this->get('security.encoder_factory')
                 ->getEncoder($user);
 
@@ -42,6 +43,10 @@ class SecurityController extends Controller
 
     public function loginAction()
     {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('homepage');
+        }
+
         $authenticationUtils = $this->get('security.authentication_utils');
 
         return $this->render('AppBundle:Security:login.html.twig', [

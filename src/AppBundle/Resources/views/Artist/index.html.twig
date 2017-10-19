@@ -24,11 +24,5 @@
             </tr>
             {% endfor %}
         </table>
-
-        {% if artists.haveToPaginate %}
-        <div class="pagerfanta">
-            {{ pagerfanta(artists, 'twitter_bootstrap3') }}
-        </div>
-        {% endif %}
     </div>
 {% endblock %}

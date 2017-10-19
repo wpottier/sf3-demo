@@ -39,11 +39,5 @@
                 {% endfor %}
             </tbody>
         </table>
-
-        {% if tracks.haveToPaginate %}
-            <div class="pagerfanta">
-                {{ pagerfanta(tracks, 'twitter_bootstrap3') }}
-            </div>
-        {% endif %}
     </div>
 {% endblock %}

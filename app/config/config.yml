@@ -68,3 +68,16 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+
+guzzle:
+    logging: '%kernel.debug%'
+
+    clients:
+        api_spotify:
+            base_url: "https://api.spotify.com/v1/"
+            options:
+                headers:
+                    Accept: "application/json"
+
+                timeout: 30

@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Artist;
 use AppBundle\Form\ArtistType;
-use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,11 +16,8 @@ class ArtistController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $pager = new Pagerfanta($this->get('app.repository.artist')->findAllWithTracksPagerAware());
-        $pager->setCurrentPage($request->request->get('page', 1));
-
         return $this->render('AppBundle:Artist:index.html.twig', [
-            'artists' => $pager,
+            'artists' => $this->getDoctrine()->getRepository('AppBundle:Artist')->findAllWithTracksPagerAware(),
         ]);
     }
 
@@ -46,8 +42,9 @@ class ArtistController extends Controller
         }
 
         $form = $this->createForm(ArtistType::class, $artist);
+        $form->handleRequest($request);
 
-        if ($form->handleRequest($request)->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             if (is_null($id)) {
@@ -74,7 +71,9 @@ class ArtistController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($artist);
-        if ($deleteForm->handleRequest($request)->isValid()) {
+        $deleteForm->handleRequest($request);
+
+        if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             // Suppression
             $em = $this->getDoctrine()->getManager();
             $em->remove($artist);

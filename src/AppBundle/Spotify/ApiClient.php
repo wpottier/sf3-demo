@@ -2,54 +2,33 @@
 
 namespace AppBundle\Spotify;
 
-use AppBundle\DataCollector\SpotifyApiCollector;
 use GuzzleHttp\Client;
-use Symfony\Component\Stopwatch\Stopwatch;
 
 class ApiClient
 {
     private $guzzleClient;
 
-    private $spotifyApiCollector;
+    private $spotifyApiId;
 
-    /** @var Stopwatch */
-    private $stopwatch;
+    private $spotifyApiSecret;
 
-    public function __construct(Client $guzzleClient, SpotifyApiCollector $spotifyApiCollector = null)
+    private $spotifyAccessToken;
+
+    public function __construct(Client $guzzleClient, $spotifyApiId, $spotifyApiSecret)
     {
         $this->guzzleClient = $guzzleClient;
-        $this->spotifyApiCollector = $spotifyApiCollector;
+        $this->spotifyApiId = $spotifyApiId;
+        $this->spotifyApiSecret = $spotifyApiSecret;
     }
 
-    public function setStopwatch(Stopwatch $stopwatch = null)
+    public function search($query, $type)
     {
-        $this->stopwatch = $stopwatch;
-    }
-
-    public function search($query, $track)
-    {
-        if ($this->stopwatch) {
-            $this->stopwatch->start('guzzle');
-        }
-
         $response = $this->guzzleClient->get(
-            $url = sprintf('https://api.spotify.com/v1/search?q=%s&type=%s', $query, $track),
+            $url = sprintf('https://api.spotify.com/v1/search?q=%s&type=%s', $query, $type),
             ['verify' => false]
         );
-        $this->spotifyApiCollector->onRequest($url);
 
-        if ($this->stopwatch) {
-            $this->stopwatch->stop('guzzle');
-            $this->stopwatch->start('json_decode');
-        }
-
-        $result = json_decode($response->getBody()->getContents());
-
-        if ($this->stopwatch) {
-            $this->stopwatch->stop('json_decode');
-        }
-
-        return $result;
+        return  json_decode($response->getBody()->getContents());
     }
 
     public function populateTrackInfo($trackTitle, $artistName)
@@ -60,5 +39,25 @@ class ApiClient
         );
 
         return $spotifyResult->tracks;
+    }
+
+    protected function grantClientCredentials()
+    {
+        if (!$this->spotifyAccessToken) {
+            $response = $this->guzzleClient->post('https://accounts.spotify.com/api/token', [
+                'form_params' => [
+                    'grant_type' => 'client_credentials'
+                ],
+                'auth' => [
+                    $this->spotifyApiId,
+                    $this->spotifyApiSecret
+                ]
+            ]);
+
+            $responseData = json_decode($response->getBody()->getContents(), true);
+            $this->spotifyAccessToken = $responseData['access_token'];
+        }
+
+        return $this->spotifyAccessToken;
     }
 }

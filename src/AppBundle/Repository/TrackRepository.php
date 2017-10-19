@@ -2,8 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-
 /**
  * TrackRepository
  *
@@ -12,10 +10,7 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
  */
 class TrackRepository extends \Doctrine\ORM\EntityRepository
 {
-    /**
-     * @return DoctrineORMAdapter
-     */
-    public function findAllWithArtistPagerAware()
+    public function findAllWithArtist()
     {
         $qb = $this->createQueryBuilder('tracks');
         $qb
@@ -23,7 +18,7 @@ class TrackRepository extends \Doctrine\ORM\EntityRepository
             ->select('tracks', 'artists')
         ;
 
-        return new DoctrineORMAdapter($qb);
+        return $qb->getQuery()->execute();
     }
 
     public function findWithArtist($trackId)
