@@ -8,3 +8,5 @@ services:
         class: 'AppBundle\Spotify\ApiClient'
         arguments:
             - '@guzzle.client.api_spotify'
+            - '%spotify_client_id%'
+            - '%spotify_client_secret%'

@@ -25,7 +25,12 @@ class ApiClient
     {
         $response = $this->guzzleClient->get(
             $url = sprintf('https://api.spotify.com/v1/search?q=%s&type=%s', $query, $type),
-            ['verify' => false]
+            [
+                'verify' => false,
+                'headers' => [
+                    'Authorization' => sprintf('Bearer %s', $this->grantClientCredentials())
+                ]
+            ]
         );
 
         return  json_decode($response->getBody()->getContents());
